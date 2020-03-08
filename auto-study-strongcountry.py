@@ -34,7 +34,7 @@ VIDEO_LINK=random.choice(V_L)
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-automation'])
 browser = webdriver.Chrome(options=options)
-#browser = webdriver.Chrome(executable_path=r'D:\OneDrive\Python\selenium\chromedriver.exe',options=options)
+#browser = webdriver.Chrome(executable_path=r'C:\Users\peter\Desktop\chromedriver.exe',options=options)
 
 
 def login_simulation():
@@ -83,40 +83,12 @@ def watch_videos():
     time.sleep(10)
     videos = set(browser.find_elements_by_class_name("textWrapper")) # 获取视频链接，用set函数去重
     print(type(videos))
-    print(videos)
+    print(videos)  
     for i , video in enumerate(videos):  # 遍历视频链接
-        if i > 7:  # 点击7个视频链接
+        if i > 6:  # 点击6个视频链接
             break
         print(i,video)
         video.click()
-        time.sleep(5)
-        print(browser.current_url)
-        all_handles = browser.window_handles # 获取当前窗口的句柄
-        for handle in all_handles[i+1:]:  # 对除第一个窗口句柄以外的句柄进行操作
-            try:
-                browser.switch_to.window(handle) # 切换到当前窗口
-                element = WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'duration')))
-                video_duration_str = browser.find_element_by_class_name("duration").get_attribute('innerText')  #获取视频时长的字段内容，几分几秒，这里用find_elements方法会报错
-                video_duration = int(video_duration_str.split(':')[0])* 60 + int(video_duration_str.split(':')[1])  # 将时长转换成秒数
-                print(video_duration)
-                time.sleep(video_duration+3) # 保持窗口到视频时长结束
-                print(browser.current_url + '观看完毕')
-                browser.close()
-            except:
-                print("E")
-            else:
-                continue
-        browser.switch_to.window(all_handles[0]) # 回到第一个窗口
-        time.sleep(5)
-    print("观看视频完毕\n")
-
-'''    
-    for i , video in enumerate(videos):  # 遍历视频链接
-        if i > 7:  # 点击6个视频链接
-            break
-        print(i,video)
-        video.click()
-        time.sleep(5)
         print(browser.current_url)
     all_handles = browser.window_handles # 获取当前窗口的句柄
     for handle in all_handles[1:]:  # 对除第一个窗口句柄以外的句柄进行操作
@@ -124,7 +96,8 @@ def watch_videos():
             browser.switch_to.window(handle) # 切换到当前窗口
             video_duration_str = browser.find_element_by_class_name("duration").get_attribute('innerText')  #获取视频时长的字段内容，几分几秒，这里用find_elements方法会报错
             video_duration = int(video_duration_str.split(':')[0])* 60 + int(video_duration_str.split(':')[1])  # 将时长转换成秒数
-            time.sleep(video_duration + 5) # 保持窗口到视频时长结束
+            time.sleep(video_duration+5) # 保持窗口到视频时长结束
+            print(video_duration)
             print(browser.current_url + '观看完毕')
             browser.close()
         except:
@@ -134,7 +107,6 @@ def watch_videos():
     browser.switch_to.window(all_handles[0]) # 回到第一个窗口
     time.sleep(5)
     print("观看视频完毕\n")
-'''
 
 	
 def get_scores():
